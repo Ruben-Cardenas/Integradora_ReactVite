@@ -1,0 +1,127 @@
+/* Fondo y estructura general */
+.users-wrapper {
+  padding: 20px;
+  background: linear-gradient(to top, #001F5C, #84ADFF);
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-family: 'Mulish', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+/* Contenedores principales */
+.form-container,
+.table-container {
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Tarjetas */
+.form-section,
+.list-section {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Encabezados de tarjetas */
+.form-section .ant-card-head,
+.list-section .ant-card-head {
+  background-color: #0070f3;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  text-align: center;
+  position: relative;
+}
+
+/* Título centrado */
+.ant-card-head-title {
+  width: 100%;
+  text-align: center;
+}
+
+/* Ícono de acción a la derecha (como la flecha) */
+.ant-card-extra {
+  position: absolute;
+  right: 16px;
+  top: 12px;
+}
+
+/* Buscador */
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.search-bar .ant-input {
+  flex: 1;
+}
+
+/* Estados */
+.status-active,
+.status-inactive {
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-size: 13px;
+}
+
+.status-active {
+  background-color: #e6ffe6;
+  color: green;
+}
+
+.status-inactive {
+  background-color: #ffe6e6;
+  color: red;
+}
+
+/* Botones de acciones */
+.actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.view {
+  background-color: #43d6ae;
+  color: white;
+}
+
+.delete {
+  background-color: #ff5e5e;
+  color: white;
+}
+
+.edit {
+  background-color: #60a5fa;
+  color: white;
+}
+
+/* Columnas internas responsivas */
+.ant-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Limpieza de filas */
+.ant-row {
+  margin-bottom: 0;
+}

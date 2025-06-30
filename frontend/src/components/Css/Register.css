@@ -1,0 +1,162 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Mulish', sans-serif;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #0072E6, #000000);
+}
+
+.register-wrapper {
+  display: flex;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3rem; /* 🔽 Menos espacio lateral */
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/* Imagen de fondo */
+.image-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/img/login-collage.png");
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  opacity: 1;
+}
+
+/* Imagen frontal encima del fondo */
+.image-front {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/img/register-edificio.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right center;
+  z-index: 1;
+  opacity: 1;
+}
+
+/* Lado izquierdo: formulario */
+.register-left {
+  z-index: 2;
+  max-width: 370px; /* 🔽 Ancho reducido */
+  color: white;
+  margin-left: 4rem; /* 🔽 Más pegado a la izquierda */
+}
+
+.register-form {
+  width: 100%;
+}
+
+.register-title {
+  font-size: 2.1rem; /* 🔽 Letra más pequeña */
+  font-weight: bold;
+  margin-bottom: 1.6rem;
+}
+
+/* Campos de texto */
+.register-input {
+  width: 100%;
+  height: 45px; /* 🔽 Más bajos */
+  padding-left: 14px;
+  margin-bottom: 1.1rem;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.95rem; /* 🔽 Fuente más pequeña */
+  position: relative;
+}
+
+.register-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Campo de contraseña con ícono */
+.password-wrapper {
+  position: relative;
+}
+
+.eye-btn {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  opacity: 0.7;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1rem; /* 🔽 Icono más pequeño */
+}
+
+/* Tipo de cuenta */
+.account-type {
+  margin-bottom: 1.1rem;
+}
+
+.account-type label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem; /* 🔽 Letra más pequeña */
+}
+
+/* Radios */
+.radio-group {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem; /* 🔽 Letra más pequeña */
+}
+
+/* Botón de registro */
+.register-btn {
+  width: 100%;
+  height: 50px; /* 🔽 Botón más bajo */
+  background: linear-gradient(to bottom, #3969FC, #2A49FF);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem; /* 🔽 Fuente más pequeña */
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Enlace para iniciar sesión */
+.login-link {
+  text-align: center;
+  margin-top: 1.2rem;
+  color: #c0dafe;
+  font-size: 0.95rem; /* 🔽 Letra más pequeña */
+}
+
+.login-link a {
+  color: #2167d9;
+  text-decoration: underline;
+  font-size: 0.95rem;
+}
+
+/* Ocultar logo de letras en responsive */
+.register-logo-letras {
+  display: none;
+}

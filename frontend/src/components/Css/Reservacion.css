@@ -1,0 +1,76 @@
+/* src/Css/Reservacion.css */
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap');
+
+.reserv-wrapper {
+  padding: 40px;
+  min-height: 100vh;
+  background: linear-gradient(to top, #001F5C, #84ADFF);
+  font-family: 'Mulish', sans-serif;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.reserv-card {
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1000px;
+  overflow: hidden;
+}
+
+.reserv-card .ant-card-head {
+  background-color: #0070f3;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  text-align: center;
+}
+
+.ant-table {
+  background-color: white;
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #cce0ff;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.ant-table-tbody > tr > td {
+  font-size: 14px;
+  padding: 10px;
+}
+
+.cancel-btn {
+  background-color: #f87171;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 4px 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #dc2626;
+}
+
+.cancel-btn[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

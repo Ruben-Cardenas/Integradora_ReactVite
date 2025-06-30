@@ -1,0 +1,137 @@
+/* --- Reset general --- */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Mulish', sans-serif;
+}
+
+/* --- Contenedor general del dashboard --- */
+.dashboard-wrapper {
+  padding: 8px;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to bottom, #2964b8, #001733);
+  overflow: hidden;
+}
+
+/* --- Grid de tarjetas/paneles --- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); /* 🔽 más compacta */
+  gap: 10px;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+/* --- Estilo de cada tarjeta/panel --- */
+.dashboard-card {
+  border-radius: 4px;
+  background-color: #e3e9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 0.3rem;
+}
+
+/* --- Panel que ocupa el ancho completo --- */
+.full-width {
+  grid-column: span 2;
+}
+
+/* --- Encabezado de tarjetas (Ant Design override) --- */
+.dashboard-card .ant-card-head {
+  background: #1a60cc !important;
+  color: white !important;
+  font-weight: bold;
+  font-size: 0.85rem; /* 🔽 tamaño de fuente reducido */
+  padding: 0.3rem 0.5rem !important;
+  border-radius: 4px 4px 0 0;
+}
+
+/* --- Botones Hoy / Semana / Mes --- */
+.filter-buttons {
+  display: flex;
+  gap: 4px;
+  margin-top: 0.2rem;
+}
+
+.filter-buttons button {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.72rem; /* 🔽 más pequeño */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.filter-buttons button:hover {
+  background-color: #1a1a1a;
+}
+
+/* --- Tabla (contenido) --- */
+.ant-table-wrapper {
+  margin-top: 0.3rem;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #d0d8f0;
+  font-size: 0.7rem;
+  padding: 0.25rem; /* 🔽 menor padding */
+  text-align: center;
+}
+
+.ant-table-tbody > tr > td {
+  font-size: 0.68rem;
+  padding: 0.2rem;
+  text-align: center;
+}
+
+/* --- Barra de búsqueda --- */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.06);
+  gap: 0.4rem;
+  grid-column: span 2;
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.75rem;
+  padding: 0.25rem;
+}
+
+.search-bar button {
+  background: linear-gradient(to bottom, #3969FC, #2A49FF);
+  border: none;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-bar {
+    width: 100%;
+    grid-column: span 1;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+}

@@ -1,0 +1,205 @@
+/* Layout */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: linear-gradient(to top, bottom, #0b0b0b, #0072E6);
+  color: white;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0 20px 20px 0;
+}
+
+.dashboard-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.user-name {
+  font-weight: bold;
+}
+
+.user-email,
+.user-role {
+  font-size: 12px;
+}
+
+/* Sidebar menu */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  font-size: 16px;
+}
+
+.sidebar-menu li {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar-menu .active {
+  color: #f87171;
+  font-weight: bold;
+}
+
+/* Footer */
+.sidebar-footer p {
+  font-size: 14px;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  padding: 32px;
+  background: linear-gradient(to top, right, #001F5C, #84ADFF);
+  overflow-y: auto;
+}
+
+/* Registro */
+.registro-box {  
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+
+.registro-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1e40af;
+  margin-bottom: 16px;
+}
+
+.registro-form-section {
+  display: flex;
+  gap: 32px;
+}
+
+.form-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-left input,
+.form-left select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.form-left button {
+  background: #22c55e;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+}
+
+.form-left button:hover {
+  background: #16a34a;
+}
+
+/* Calendario */
+.calendar-box {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  text-align: center;
+  min-width: 220px;
+}
+
+.calendar-title {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  font-size: 12px;
+}
+
+.calendar-day {
+  font-weight: bold;
+}
+
+.calendar-cell {
+  padding: 4px;
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+/* Lista */
+.lista-box {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.search-bar button {
+  padding: 10px 16px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead {
+  background: #f3f4f6;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}

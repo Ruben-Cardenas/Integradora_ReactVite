@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap');
+
+.irrigation-wrapper {
+  padding: 40px 20px;
+  min-height: 100vh;
+  background: linear-gradient(to top, #001F5C, #84ADFF);
+  font-family: 'Mulish', sans-serif;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* Tarjetas de Riego */
+.irrigation-card {
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Encabezado de las tarjetas */
+.irrigation-card .ant-card-head {
+  background-color: #0070f3;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  text-align: center;
+}
+
+/* Imagen */
+.zona-img {
+  height: 160px;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Botón */
+.btn-riego {
+  margin-top: 12px;
+  width: 100%;
+  background-color: #2ed47a;
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.btn-riego:hover {
+  background-color: #27c46c;
+}
+
+/* Responsive alignment between cards */
+.ant-row {
+  width: 100%;
+  max-width: 1000px;
+}

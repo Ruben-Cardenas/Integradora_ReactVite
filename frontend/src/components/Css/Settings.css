@@ -1,0 +1,48 @@
+.settings-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #84adff, #001f5c);
+  padding: 40px 20px;
+  font-family: 'Mulish', sans-serif;
+}
+
+.settings-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ant-card-head {
+  background-color: #0070f3;
+  color: rgb(62, 59, 59) !important;
+  font-weight: bold;
+  font-size: 20px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  text-align: center;
+}
+
+.settings-section {
+  margin-bottom: 32px;
+}
+
+.settings-section h4 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.save-button {
+  background: linear-gradient(to bottom, #3969fc, #2a49ff);
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.note {
+  text-align: center;
+  margin-top: 10px;
+  color: #3969fcb2;
+  font-weight: bold;
+  font-size: 13px;
+}

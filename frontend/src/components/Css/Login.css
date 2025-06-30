@@ -1,0 +1,141 @@
+/* === CONTENEDOR PRINCIPAL === */
+.login-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  font-family: 'Mulish', sans-serif;
+  background: linear-gradient(to bottom, #0072E6, #000000);
+}
+
+/* === IZQUIERDA: Imagen de fondo + logo letras === */
+.login-left {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.collage-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Logo de letras centrado en la parte inferior */
+.logo-letras {
+  position: absolute;
+  bottom: 18px;
+  left: 39%;
+  transform: translateX(-50%);
+  width: 79%;
+}
+
+/* === DERECHA: Formulario === */
+.login-right {
+  width: 40%;
+  padding: 3rem 2.5rem; /* 🔽 Reduce el padding para pantallas grandes */
+  color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Logo arriba a la derecha */
+.login-logo {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 150px; /* 🔽 Logo más pequeño */
+  height: auto;
+}
+
+/* === FORMULARIO === */
+.login-form {
+  width: 100%;
+  max-width: 400px; /* 🔽 Ancho máximo del formulario */
+  margin-left: -60px; /* 🔽 Ajuste lateral izquierdo */
+  margin-right: auto;
+}
+
+/* Título del formulario */
+.login-title {
+  font-size: 2.2rem; /* 🔽 Tamaño de título reducido */
+  font-weight: 800;
+  margin-bottom: 2rem;
+  font-family: 'Mulish', sans-serif;
+  white-space: nowrap;
+}
+
+/* === INPUTS === */
+.login-input {
+  width: 100%;
+  height: 55px; /* 🔽 Altura más pequeña */
+  padding-left: 18px;
+  margin-top: 0.6rem;
+  margin-bottom: 1.5rem;
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+  border-radius: 8px;
+  font-size: 1rem; /* 🔽 Fuente más chica */
+}
+
+.login-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* === CONTRASEÑA CON ÍCONO DE OJO === */
+.password-wrapper {
+  position: relative;
+}
+
+/* Ojo alineado a la derecha dentro del input */
+.eye-btn {
+  position: absolute;
+  right: 14px; /* Pegado al borde derecho */
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  opacity: 0.6;
+  cursor: pointer;
+  font-size: 1.1rem; /* 🔽 Tamaño del icono */
+}
+
+/* === ENLACE: ¿Olvidaste tu contraseña? === */
+.forgot-password {
+  text-align: right;
+  font-size: 0.8rem; /* 🔽 Fuente más pequeña */
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: -1rem;
+  margin-bottom: 2rem;
+}
+
+/* === BOTÓN ENVIAR === */
+.submit-btn {
+  width: 100%;
+  height: 60px; /* 🔽 Botón más bajo */
+  background: linear-gradient(to bottom, #3969FC, #2A49FF);
+  color: white;
+  border: none;
+  font-size: 1rem; /* 🔽 Fuente más pequeña */
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* === ENLACE: ¿No tienes cuenta? === */
+.register-link {
+  text-align: center;
+  margin-top: 1.8rem;
+  color: #93C5FD;
+  font-weight: bold;
+  font-size: 1rem; /* 🔽 Fuente más pequeña */
+}
+
+.register-link a {
+  color: #BFDBFE;
+  text-decoration: underline;
+}
