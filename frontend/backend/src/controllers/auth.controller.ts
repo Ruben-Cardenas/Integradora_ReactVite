@@ -6,6 +6,8 @@ import Settings from "../models/Settings";
 import Residente from "../models/Residentes";
 import Zona from "../models/irrigation";
 import axios from "axios";
+import bcrypt from 'bcryptjs';
+
 
 export const saveUser = async (req: Request, res: Response) => {
   try {
@@ -106,30 +108,6 @@ export const getSettings = async (req: Request, res: Response) => {
   }
 };
 
-// Crear nuevo registro de residente
-export const saveResidente = async (req: Request, res: Response) => {
-  try {
-    const { nombre, casa, telefono, tipo } = req.body;
-    const residente = new Residente({ nombre, casa, telefono, tipo, fecha: new Date() });
-    await residente.save();
-    res.status(201).json({ message: "Registro guardado", residente });
-  } catch (error) {
-    console.error("Error al guardar registro:", error);
-    res.status(500).json({ message: "Error al guardar registro" });
-  }
-};
-
-// Obtener todos los registros de residentes
-export const getResidentes = async (_req: Request, res: Response) => {
-  try {
-    const residentes = await Residente.find().sort({ fecha: -1 });
-    res.json(residentes);
-  } catch (error) {
-    console.error("Error al obtener registros:", error);
-    res.status(500).json({ message: "Error al obtener registros" });
-  }
-};
-
 // Obtener todas las zonas
 export const getZonas = async (_req: Request, res: Response) => {
   try {
@@ -219,3 +197,58 @@ export const getDashboardData = async (_req: Request, res: Response) => {
     res.status(500).json({ message: "Error al obtener datos del dashboard" });
   }
 };
+
+
+
+import { mysqlPool } from '../config/mysql';
+
+
+// GET /residentes
+export const getResidentes = async (_req: Request, res: Response) => {
+  const [rows] = await mysqlPool.query('SELECT * FROM residentes');
+  res.json(rows);
+};
+
+// POST /residentes
+export const createResidente = async (req: Request, res: Response) => {
+  const { name, houseNumber } = req.body;
+  await mysqlPool.query(
+    'INSERT INTO residentes (name, houseNumber, status) VALUES (?, ?, "Activo")',
+    [name, houseNumber]
+  );
+  res.json({ message: 'Residente registrado' });
+};
+
+// PUT /residentes/:id/deactivate
+export const deactivateResidente = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  await mysqlPool.query(
+    'UPDATE residentes SET status = "Inactivo" WHERE id = ?',
+    [id]
+  );
+  res.json({ message: 'Residente dado de baja' });
+};
+
+// PUT /residentes/:id/usuario
+export const assignUsuario = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { username, password } = req.body;
+  const hashed = await bcrypt.hash(password, 10);
+  await mysqlPool.query(
+    'UPDATE residentes SET username = ?, password = ? WHERE id = ?',
+    [username, hashed, id]
+  );
+  res.json({ message: 'Usuario asignado' });
+};
+
+// PUT /residentes/:id/control
+export const assignControl = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { controlId, pin, topic } = req.body;
+  await mysqlPool.query(
+    'UPDATE residentes SET controlId = ?, pin = ?, topic = ? WHERE id = ?',
+    [controlId, pin, topic, id]
+  );
+  res.json({ message: 'Control asignado' });
+};
+

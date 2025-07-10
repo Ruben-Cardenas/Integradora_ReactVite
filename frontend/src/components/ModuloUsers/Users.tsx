@@ -1,8 +1,7 @@
-// src/components/ModuloUsers/Users.tsx
-
 import React, { useState } from 'react';
 import { Card, Table, Input, Button, Form, Modal } from 'antd';
 import { SearchOutlined, UserAddOutlined } from '@ant-design/icons';
+import type { ColumnsType } from 'antd/es/table';
 import '../Css/Users.css';
 
 type Resident = {
@@ -14,12 +13,20 @@ type Resident = {
 const Usuarios: React.FC = () => {
   const [activeForm, setActiveForm] = useState<null | 'usuario' | 'residencia' | 'control'>(null);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const [residents] = useState<Resident[]>([
+  const [residents, setResidents] = useState<Resident[]>([
     { name: 'Jose Maria Perez Quiñones', houseNumber: '#129', status: 'Activo' },
     { name: 'Roberto Martinez Nuñez', houseNumber: '#128', status: 'Inactivo' },
     { name: 'Bernardo Gomez Hernandez', houseNumber: '#127', status: 'Activo' },
   ]);
+
+  // Estado para el modal de dar de baja
+  const [deactivationModal, setDeactivationModal] = useState<{
+    visible: boolean;
+    resident: Resident | null;
+  }>({
+    visible: false,
+    resident: null,
+  });
 
   const showModal = (formType: 'usuario' | 'residencia' | 'control') => {
     setActiveForm(formType);
@@ -31,14 +38,35 @@ const Usuarios: React.FC = () => {
     setActiveForm(null);
   };
 
-  const columns = [
+  const confirmDeactivation = (resident: Resident) => {
+    setDeactivationModal({ visible: true, resident });
+  };
+
+  const handleConfirmDeactivate = () => {
+    if (deactivationModal.resident) {
+      setResidents(prev =>
+        prev.map(r =>
+          r.houseNumber === deactivationModal.resident!.houseNumber
+            ? { ...r, status: 'Inactivo' }
+            : r
+        )
+      );
+    }
+    setDeactivationModal({ visible: false, resident: null });
+  };
+
+  const handleCancelDeactivate = () => {
+    setDeactivationModal({ visible: false, resident: null });
+  };
+
+  const columns: ColumnsType<Resident> = [
     {
       title: 'Nombre de residente',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Numero de casa',
+      title: 'Número de casa',
       dataIndex: 'houseNumber',
       key: 'houseNumber',
     },
@@ -53,11 +81,16 @@ const Usuarios: React.FC = () => {
     {
       title: 'Acciones',
       key: 'actions',
-      render: () => (
+      render: (_, record) => (
         <div className="actions">
           <Button className="btn view" onClick={() => showModal('usuario')}>Asignar usuario</Button>
           <Button className="btn delete" onClick={() => showModal('residencia')}>Asignar residencia</Button>
           <Button className="btn edit" onClick={() => showModal('control')}>Controles</Button>
+          {record.status === 'Activo' && (
+            <Button className="btn danger" danger onClick={() => confirmDeactivation(record)}>
+              Dar de baja
+            </Button>
+          )}
         </div>
       ),
     },
@@ -141,6 +174,7 @@ const Usuarios: React.FC = () => {
         </Card>
       </div>
 
+      {/* Modal para asignaciones */}
       <Modal
         open={modalVisible}
         title={
@@ -156,6 +190,19 @@ const Usuarios: React.FC = () => {
         footer={null}
       >
         {renderModalForm()}
+      </Modal>
+
+      {/* Modal de confirmación para dar de baja */}
+      <Modal
+        open={deactivationModal.visible}
+        title="Confirmar baja de residente"
+        onCancel={handleCancelDeactivate}
+        onOk={handleConfirmDeactivate}
+        okText="Sí, dar de baja"
+        cancelText="Cancelar"
+      >
+        <p>¿Estás seguro que deseas dar de baja al residente <strong>{deactivationModal.resident?.name}</strong>?</p>
+        <p>Esta acción lo marcará como <b>Inactivo</b> en el sistema.</p>
       </Modal>
     </div>
   );
