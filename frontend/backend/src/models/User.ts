@@ -1,7 +1,7 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 export interface IUser extends Document {
-  _id: Types.ObjectId; // Añadido para evitar error TS18046
+  _id: Types.ObjectId; 
   nombre: string;
   correo: string;
   tipoCuenta: "admin" | "mantenimiento" | "vigilancia";

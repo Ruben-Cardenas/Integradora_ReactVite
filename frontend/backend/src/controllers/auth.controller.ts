@@ -44,6 +44,7 @@ export const getUser = async (req: Request, res: Response) => {
     const users = await User.find();
     res.json(users);
   } catch (error) {
+    console.error("Error al obtener usuarios:", error);
     res.status(500).json({ message: "Error al obtener usuarios.", error });
   }
 };
@@ -84,13 +85,13 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-
 export const saveSettings = async (req: Request, res: Response) => {
   try {
     const { notificaciones, tema, idioma } = req.body;
     const config = await Settings.create({ notificaciones, tema, idioma });
     res.status(201).json(config);
   } catch (error) {
+    console.error("Error al guardar configuración:", error);
     res.status(500).json({ message: "Error al guardar configuración" });
   }
 };
@@ -100,10 +101,10 @@ export const getSettings = async (req: Request, res: Response) => {
     const config = await Settings.findOne().sort({ _id: -1 }); // última
     res.json(config);
   } catch (error) {
+    console.error("Error al obtener configuración:", error);
     res.status(500).json({ message: "Error al obtener configuración" });
   }
 };
-
 
 // Crear nuevo registro de residente
 export const saveResidente = async (req: Request, res: Response) => {
@@ -124,10 +125,10 @@ export const getResidentes = async (_req: Request, res: Response) => {
     const residentes = await Residente.find().sort({ fecha: -1 });
     res.json(residentes);
   } catch (error) {
+    console.error("Error al obtener registros:", error);
     res.status(500).json({ message: "Error al obtener registros" });
   }
 };
-
 
 // Obtener todas las zonas
 export const getZonas = async (_req: Request, res: Response) => {
@@ -135,9 +136,10 @@ export const getZonas = async (_req: Request, res: Response) => {
     const zonas = await Zona.find();
     res.json(zonas);
   } catch (error) {
+    console.error("Error al obtener zonas:", error);
     res.status(500).json({ message: "Error al obtener zonas" });
   }
-};  
+};
 
 export const activarRiego = async (req: Request, res: Response) => {
   try {
@@ -145,8 +147,8 @@ export const activarRiego = async (req: Request, res: Response) => {
     const zona = await Zona.findById(id);
     if (!zona) return res.status(404).json({ message: "Zona no encontrada" });
 
-    // URL del ESP32 (IP local y endpoint definido en ESP32)
-    const esp32Url = `http://192.168.1.X:80/activar_riego`; 
+    // URL del ESP32 (deberías parametrizar esta IP)
+    const esp32Url = `http://192.168.1.X:80/activar_riego`;
 
     // Llamada HTTP al ESP32 para activar el riego
     await axios.post(esp32Url, { zona: zona.nombre });
@@ -156,11 +158,10 @@ export const activarRiego = async (req: Request, res: Response) => {
 
     res.json({ message: `Riego activado en ${zona.nombre}` });
   } catch (error) {
-    console.error(error);
+    console.error("Error al activar riego:", error);
     res.status(500).json({ message: "Error al activar riego" });
   }
 };
-
 
 export const getDashboardData = async (_req: Request, res: Response) => {
   try {
@@ -172,41 +173,44 @@ export const getDashboardData = async (_req: Request, res: Response) => {
     const zonas = await Zona.find();
 
     // Construir datos de humedad y temperatura
-    const humedad = zonas.map(zona => ({
+    const humedad = zonas.map((zona) => ({
       area: zona.nombre,
-      valor: zona.humedad
+      valor: zona.humedad,
     }));
 
-    const temperatura = zonas.map(zona => ({
+    const temperatura = zonas.map((zona) => ({
       area: zona.nombre,
-      valor: zona.temperatura
+      valor: zona.temperatura,
     }));
 
     // Últimos 4 residentes registrados como "filtraciones"
-    const filtraciones = await Residente.find().sort({ fecha: -1 }).limit(4).select("casa nombre telefono");
+    const filtraciones = await Residente.find()
+      .sort({ fecha: -1 })
+      .limit(4)
+      .select("casa nombre telefono");
 
     const data = {
-      entradas: entradas.map(e => ({
+      entradas: entradas.map((e) => ({
         nombre: e.nombre,
         hora: new Date(e.fecha).toLocaleTimeString("es-MX", {
           hour: "2-digit",
-          minute: "2-digit"
-        })
+          minute: "2-digit",
+        }),
       })),
-      salidas: salidas.map(s => ({
+      salidas: salidas.map((s) => ({
         nombre: s.nombre,
         hora: new Date(s.fecha).toLocaleTimeString("es-MX", {
           hour: "2-digit",
-          minute: "2-digit"
-        })
+          minute: "2-digit",
+        }),
       })),
       humedad,
       temperatura,
-      filtraciones: filtraciones.map(f => ({
+      filtraciones: filtraciones.map((f) => ({
         casa: f.casa,
         nombre: f.nombre,
-        telefono: f.telefono
-      }))
+        telefono: f.telefono,
+      })),
     };
 
     res.json(data);

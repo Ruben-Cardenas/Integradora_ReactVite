@@ -1,6 +1,6 @@
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
-export async function encryptionPassword(password: String) {
+export async function encryptionPassword(password: string): Promise<string> {
   const saltRounds = 10;
   const hash = await bcrypt.hash(password, saltRounds);
   return hash;
@@ -9,7 +9,7 @@ export async function encryptionPassword(password: String) {
 export async function verifyPassword(
   enteredPassword: string,
   savedHash: string
-) {
-  const coincidence = await bcrypt.compare(enteredPassword, savedHash);
-  return coincidence;
+): Promise<boolean> {
+  const match = await bcrypt.compare(enteredPassword, savedHash);
+  return match;
 }

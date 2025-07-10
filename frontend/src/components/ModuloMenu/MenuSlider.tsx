@@ -1,64 +1,61 @@
 import React from 'react';
 import {
   AppstoreOutlined,
-  BarChartOutlined,
   CloudOutlined,
   ShopOutlined,
   TeamOutlined,
   UserOutlined,
+  LogoutOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
-import { useNavigate, Routes, Route } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 
-import Dashboard from '../ModuloDashboard/Dashboard';
-import Irrigation from '../ModuloIrrigation/Irrigation';
-import Resident from '../ModuloResident/Resident';
-import Users from '../ModuloUsers/Users';
-import Settings from '../ModuloSettings/Setting';
-import Reservacion from '../ModuloReservacion/Reservacion';
+const { Content, Sider } = Layout;
 
-const { Content, Sider,  } = Layout;
+const user = JSON.parse(localStorage.getItem("usuario") || "{}");
+const tipoCuenta = user?.tipoCuenta || "";
 
-// Datos del usuario
-const user = {
-  name: 'Rubén Z.',
-  email: 'ruben@example.com',
-  avatar: 'https://i.pravatar.cc/100',
-};
-
-// Menú lateral
 const menuItems = [
-  { label: 'Dashboard', key: '1', icon: <AppstoreOutlined />, path: '/dashboard' },
-  { label: 'Resident', key: '2', icon: <UserOutlined />, path: '/resident' },
-  { label: 'Users', key: '3', icon: <TeamOutlined />, path: '/users' },
-  { label: 'Settings', key: '4', icon: <BarChartOutlined />, path: '/settings' },
-  { label: 'Irrigation', key: '5', icon: <CloudOutlined />, path: '/irrigation' },
-  { label: 'Reservacion', key: '6', icon: <ShopOutlined />, path: '/reservacion' },
+  { label: 'Dashboard', key: '/menu/dashboard', icon: <AppstoreOutlined />, roles: ['admin', 'vigilancia'] },
+  { label: 'Resident', key: '/menu/resident', icon: <UserOutlined />, roles: ['admin', 'vigilancia'] },
+  { label: 'Users', key: '/menu/users', icon: <TeamOutlined />, roles: ['admin'] },
+  { label: 'Irrigation', key: '/menu/irrigation', icon: <CloudOutlined />, roles: ['admin', 'mantenimiento'] },
+  { label: 'Reservacion', key: '/menu/reservacion', icon: <ShopOutlined />, roles: ['admin', 'vigilancia'] },
 ];
 
 const MenuSlider: React.FC = () => {
   const navigate = useNavigate();
 
-  // Acción al hacer clic en menú
   const handleClick = ({ key }: { key: string }) => {
-    const selected = menuItems.find(item => item.key === key);
-    if (selected) navigate(selected.path);
+    navigate(key);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+    navigate("/", { replace: true });
+    window.location.reload();
+  };
+
+  const filteredItems = menuItems
+    .filter(item => item.roles.includes(tipoCuenta))
+    .map(({ key, icon, label }) => ({ key, icon, label }));
+
   return (
-    <Layout style={{ minHeight: '100vh', overflow: 'hidden' }}>
-      {/* Menú lateral izquierdo */}
+    <Layout style={{ minHeight: '100vh' }}>
       <Sider
         width={200}
         style={{
           background: 'linear-gradient(to top, #0b0b0b, #0072E6)',
-          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        {/* Avatar y datos del usuario */}
+        {/* Usuario */}
         <div style={{ padding: '16px', textAlign: 'center', color: '#fff' }}>
           <img
-            src={user.avatar}
+            src={user.avatar || 'https://i.pravatar.cc/100'}
             alt="Avatar"
             style={{
               width: 64,
@@ -68,38 +65,82 @@ const MenuSlider: React.FC = () => {
               border: '2px solid white',
             }}
           />
-          <div style={{ fontWeight: 'bold' }}>{user.name}</div>
-          <div style={{ fontSize: '12px', opacity: 0.8 }}>{user.email}</div>
+          <div style={{ fontWeight: 'bold' }}>{user.nombre || 'Usuario'}</div>
+          <div style={{ fontSize: '12px', opacity: 0.8 }}>{user.correo}</div>
         </div>
 
-        {/* Menú de navegación */}
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['1']}
-          items={menuItems.map(({ key, icon, label }) => ({ key, icon, label }))}
-          onClick={handleClick}
-        />
+        {/* Menú principal y botones abajo */}
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          {/* Menú principal */}
+          <div style={{ flexGrow: 1, overflowY: 'auto' }}>
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={[window.location.pathname]}
+              items={filteredItems}
+              onClick={handleClick}
+              style={{
+                background: 'transparent',
+                border: 'none',
+              }}
+            />
+          </div>
+
+          {/* Botones al fondo */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '16px',
+              gap: '10px',
+              marginTop: 'auto',
+              marginBottom: '80px', // ⬅️ Aún más abajo
+            }}
+          >
+            <div
+              onClick={() => navigate('/menu/settings')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                color: 'white',
+                cursor: 'pointer',
+                gap: 8,
+                padding: '8px',
+                borderRadius: 6,
+                transition: 'background 0.3s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#1f1f1f')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              <SettingOutlined />
+              <span>Settings</span>
+            </div>
+
+            <div
+              onClick={handleLogout}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                color: 'white',
+                cursor: 'pointer',
+                gap: 8,
+                padding: '8px',
+                borderRadius: 6,
+                transition: 'background 0.3s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#1f1f1f')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            >
+              <LogoutOutlined />
+              <span>Log out</span>
+            </div>
+          </div>
+        </div>
       </Sider>
 
-      {/* Contenido del lado derecho (sin Header) */}
-      <Layout style={{ overflow: 'hidden' }}>
-        <Content
-          style={{
-            margin: 0,
-            padding: 0,
-            height: '100vh',
-            overflow: 'hidden',
-          }}
-        >
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/resident" element={<Resident />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/irrigation" element={<Irrigation />} />
-            <Route path="/reservacion" element={<Reservacion />} />
-          </Routes>
+      <Layout>
+        <Content style={{ margin: 0, padding: 0 }}>
+          <Outlet />
         </Content>
       </Layout>
     </Layout>

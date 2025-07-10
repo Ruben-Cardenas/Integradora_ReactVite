@@ -1,8 +1,8 @@
 // src/components/ModuloUsers/Users.tsx
 
 import React, { useState } from 'react';
-import { Card, Table, Input, Button, Form } from 'antd';
-import { SearchOutlined, UserAddOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { Card, Table, Input, Button, Form, Modal } from 'antd';
+import { SearchOutlined, UserAddOutlined } from '@ant-design/icons';
 import '../Css/Users.css';
 
 type Resident = {
@@ -12,13 +12,24 @@ type Resident = {
 };
 
 const Usuarios: React.FC = () => {
-  const [activeForm, setActiveForm] = useState<null | 'residente' | 'usuario' | 'residencia' | 'control'>(null);
+  const [activeForm, setActiveForm] = useState<null | 'usuario' | 'residencia' | 'control'>(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const [residents] = useState<Resident[]>([
     { name: 'Jose Maria Perez Quiñones', houseNumber: '#129', status: 'Activo' },
     { name: 'Roberto Martinez Nuñez', houseNumber: '#128', status: 'Inactivo' },
     { name: 'Bernardo Gomez Hernandez', houseNumber: '#127', status: 'Activo' },
   ]);
+
+  const showModal = (formType: 'usuario' | 'residencia' | 'control') => {
+    setActiveForm(formType);
+    setModalVisible(true);
+  };
+
+  const handleClose = () => {
+    setModalVisible(false);
+    setActiveForm(null);
+  };
 
   const columns = [
     {
@@ -44,103 +55,80 @@ const Usuarios: React.FC = () => {
       key: 'actions',
       render: () => (
         <div className="actions">
-          <Button className="btn view" onClick={() => setActiveForm('usuario')}>Asignar usuario</Button>
-          <Button className="btn delete" onClick={() => setActiveForm('residencia')}>Asignar residencia</Button>
-          <Button className="btn edit" onClick={() => setActiveForm('control')}>Controles</Button>
+          <Button className="btn view" onClick={() => showModal('usuario')}>Asignar usuario</Button>
+          <Button className="btn delete" onClick={() => showModal('residencia')}>Asignar residencia</Button>
+          <Button className="btn edit" onClick={() => showModal('control')}>Controles</Button>
         </div>
       ),
     },
   ];
 
-  const backArrow = (
-    <ArrowLeftOutlined
-      style={{
-        fontSize: '24px',
-        cursor: 'pointer',
-        color: '#000',
-        marginBottom: '10px',
-      }}
-      onClick={() => setActiveForm(null)}
-    />
-  );
-
-  const renderForm = () => {
+  const renderModalForm = () => {
     switch (activeForm) {
       case 'usuario':
         return (
-          <Card title="Asignar Usuario" className="form-section">
-            {backArrow}
-            <Form layout="vertical">
-              <Form.Item label="Username">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Contraseña">
-                <Input.Password />
-              </Form.Item>
-              <Button type="primary" htmlType="submit">Guardar usuario</Button>
-            </Form>
-          </Card>
+          <Form layout="vertical">
+            <Form.Item label="Username">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Contraseña">
+              <Input.Password />
+            </Form.Item>
+            <Button type="primary" htmlType="submit">Guardar usuario</Button>
+          </Form>
         );
       case 'residencia':
         return (
-          <Card title="Asignar Residencia" className="form-section">
-            {backArrow}
-            <Form layout="vertical">
-              <Form.Item label="Número de residencia">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Nombre de usuario">
-                <Input />
-              </Form.Item>
-              <Button type="primary" htmlType="submit">Asignar residencia</Button>
-            </Form>
-          </Card>
+          <Form layout="vertical">
+            <Form.Item label="Número de residencia">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Nombre de usuario">
+              <Input />
+            </Form.Item>
+            <Button type="primary" htmlType="submit">Asignar residencia</Button>
+          </Form>
         );
       case 'control':
         return (
-          <Card title="Asignar Controladores" className="form-section">
-            {backArrow}
-            <Form layout="vertical">
-              <Form.Item label="ID de residencia">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Control">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Pin">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Topic">
-                <Input />
-              </Form.Item>
-              <Button type="primary" htmlType="submit">Guardar controlador</Button>
-            </Form>
-          </Card>
+          <Form layout="vertical">
+            <Form.Item label="ID de residencia">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Control">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Pin">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Topic">
+              <Input />
+            </Form.Item>
+            <Button type="primary" htmlType="submit">Guardar controlador</Button>
+          </Form>
         );
       default:
-        return (
-          <Card title="Registro de nuevos residentes" className="form-section">
-            <Form layout="vertical">
-              <Form.Item label="Nombre(s)">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Apellido paterno">
-                <Input />
-              </Form.Item>
-              <Form.Item label="Apellido materno">
-                <Input />
-              </Form.Item>
-              <Button type="primary" icon={<UserAddOutlined />} htmlType="submit">Agregar residente</Button>
-            </Form>
-          </Card>
-        );
+        return null;
     }
   };
 
   return (
     <div className="users-wrapper">
       <div className="form-container">
-        {renderForm()}
+        <Card title="Registro de nuevos residentes" className="form-section">
+          <Form layout="vertical">
+            <Form.Item label="Nombre(s)">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Apellido paterno">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Apellido materno">
+              <Input />
+            </Form.Item>
+            <Button type="primary" icon={<UserAddOutlined />} htmlType="submit">Agregar residente</Button>
+          </Form>
+        </Card>
       </div>
 
       <div className="table-container">
@@ -152,6 +140,23 @@ const Usuarios: React.FC = () => {
           <Table dataSource={residents} columns={columns} pagination={false} rowKey="houseNumber" />
         </Card>
       </div>
+
+      <Modal
+        open={modalVisible}
+        title={
+          activeForm === 'usuario'
+            ? 'Asignar Usuario'
+            : activeForm === 'residencia'
+            ? 'Asignar Residencia'
+            : activeForm === 'control'
+            ? 'Asignar Controladores'
+            : ''
+        }
+        onCancel={handleClose}
+        footer={null}
+      >
+        {renderModalForm()}
+      </Modal>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 // src/components/ModuloIrrigation/Irrigation.tsx
-import React from "react";
-import { Card, Col, Row, Button } from "antd";
+import React, { useEffect } from "react";
+import { Card, Col, Row, Button, notification } from "antd";
 import "../Css/Irrigation.css";
 
 const zonas = [
@@ -24,13 +24,31 @@ const zonas = [
   },
   {
     nombre: "Área de Picnic",
-    humedad: "47%",
-    temperatura: "28°C",
+    humedad: "42%",
+    temperatura: "29°C",
     imagen: "/img/jardines-infantiles.jpg",
   },
 ];
 
 const Irrigation: React.FC = () => {
+  useEffect(() => {
+    zonas.forEach((zona) => {
+      const humedadNum = parseInt(zona.humedad);
+      const temperaturaNum = parseInt(zona.temperatura);
+
+      if (humedadNum < 46 || temperaturaNum > 27) {
+        notification.warning({
+          message: "Alerta de zona crítica",
+          description: `La zona "${zona.nombre}" tiene ${
+            humedadNum < 46 ? `humedad baja (${zona.humedad})` : `temperatura alta (${zona.temperatura})`
+          }.`,
+          placement: "topRight",
+          duration: 5,
+        });
+      }
+    });
+  }, []);
+
   return (
     <div className="irrigation-wrapper">
       <h1 className="title">Sistema de Riego</h1>

@@ -19,5 +19,5 @@ const residenteSchema = new Schema<IResidente>(
   { timestamps: true }
 );
 
-// 👇 ESTE EXPORT ES OBLIGATORIO
+
 export default model<IResidente>("Residente", residenteSchema);

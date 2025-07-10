@@ -1,146 +1,148 @@
 // src/components/ModuloDashboard/Dashboard.tsx
-import '../Css/Dashboard.css';
-// src/components/ModuloDashboard/Dashboard.tsx
-import React from 'react';
-import { Table, Button, Input, Card } from 'antd';
-import { ClockCircleOutlined, SearchOutlined } from '@ant-design/icons';
 
+import '../Css/Dashboard.css';
+import React, { useState } from 'react';
+import { Table, Button, Card, Modal } from 'antd';
+import { ClockCircleOutlined } from '@ant-design/icons';
 
 const Dashboard: React.FC = () => {
-  // Simulación de datos para mostrar
-  const entradas = [
-    { nombre: 'Juan Palcio Gutierrez', hora: '13:00 pm' },
-    { nombre: 'Roberto Martinez Nuñez', hora: '15:00 pm' },
-    { nombre: 'Jose Maria Perez Quiñones', hora: '22:00 pm' },
-    { nombre: 'Bernardo Gomez Hernandez', hora: '19:00 pm' },
-  ];
-
-  const salidas = [
-    { nombre: 'Juan Palcio Gutierrez', hora: '5:00 am' },
-    { nombre: 'Roberto Martinez Nuñez', hora: '6:00 am' },
-    { nombre: 'Jose Maria Perez Quiñones', hora: '7:00 am' },
-    { nombre: 'Bernardo Gomez Hernandez', hora: '9:00 am' },
+  const registros = [
+    { nombre: 'Juan Palcio Gutierrez', tipo: 'Entrada', hora: '13:00 pm' },
+    { nombre: 'Juan Palcio Gutierrez', tipo: 'Salida', hora: '5:00 am' },
+    { nombre: 'Roberto Martinez Nuñez', tipo: 'Entrada', hora: '15:00 pm' },
+    { nombre: 'Roberto Martinez Nuñez', tipo: 'Salida', hora: '6:00 am' },
+    { nombre: 'Jose Maria Perez Quiñones', tipo: 'Entrada', hora: '22:00 pm' },
+    { nombre: 'Jose Maria Perez Quiñones', tipo: 'Salida', hora: '7:00 am' },
+    { nombre: 'Bernardo Gomez Hernandez', tipo: 'Entrada', hora: '19:00 pm' },
+    { nombre: 'Bernardo Gomez Hernandez', tipo: 'Salida', hora: '9:00 am' },
   ];
 
   const humedad = [
-    { area: 'Parque infantil', valor: '20%' },
-    { area: 'Zona de picknick', valor: '77%' },
-    { area: 'Campo Deportivo', valor: '99%' },
-    { area: 'Áreas Verdes', valor: '79%' },
+    { area: 'Parque infantil', valor: '20%', img: '/images/parque_infantil.jpg' },
+    { area: 'Zona de picknick', valor: '77%', img: '/images/zona_picknick.jpg' },
+    { area: 'Campo Deportivo', valor: '99%', img: '/images/campo_deportivo.jpg' },
+    { area: 'Áreas Verdes', valor: '79%', img: '/images/areas_verdes.jpg' },
   ];
 
   const temperatura = [
-    { area: 'Parque infantil', valor: '20°C' },
-    { area: 'Juegos Infantiles', valor: '10°C' },
-    { area: 'Campo Deportivo', valor: '18°C' },
-    { area: 'Áreas Verdes', valor: '27°C' },
+    { area: 'Parque infantil', valor: '20°C', img: '/images/parque_infantil.jpg' },
+    { area: 'Juegos Infantiles', valor: '10°C', img: '/images/juegos_infantiles.jpg' },
+    { area: 'Campo Deportivo', valor: '18°C', img: '/images/campo_deportivo.jpg' },
+    { area: 'Áreas Verdes', valor: '27°C', img: '/images/areas_verdes.jpg' },
   ];
 
-  const filtraciones = [
-    { casa: '#129', nombre: 'Juan', apellidos: 'Palcio Gutierrez', correo: 'PalcioGutierrez@email.com', telefono: '6182123344' },
-    { casa: '#128', nombre: 'Roberto', apellidos: 'Martinez Nuñez', correo: 'MartinezNuñez@email.com', telefono: '6182123455' },
-    { casa: '#127', nombre: 'Jose Maria', apellidos: 'Perez Quiñones', correo: 'PerezQuiñones@email.com', telefono: '6182123566' },
-    { casa: '#126', nombre: 'Bernardo', apellidos: 'Gomez Hernandez', correo: 'GomezHernandez@email.com', telefono: '6182123677' },
-  ];
+  // Estado para manejar el modal
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState<{ area: string; valor: string; img: string } | null>(null);
+
+  const openModal = (record: { area: string; valor: string; img: string }) => {
+    setModalContent(record);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setModalContent(null);
+  };
 
   return (
     <div className="dashboard-wrapper">
       <div className="dashboard-grid">
-        <Card title="Entradas de Residentes" className="dashboard-card" extra={
-          <div className="filter-buttons">
-            <Button size="small">Hoy</Button>
-            <Button size="small">Semana</Button>
-            <Button size="small">Mes</Button>
-          </div>
-        }>
-          <Table
-            size="small"
-            pagination={false}
-            dataSource={entradas}
-            columns={[
-              { title: 'Nombre del residente', dataIndex: 'nombre', key: 'nombre' },
-              {
-                title: 'Hora de entrada',
-                dataIndex: 'hora',
-                key: 'hora',
-                render: hora => <span><ClockCircleOutlined /> {hora}</span>
-              },
-            ]}
-            rowKey="nombre"
-          />
-        </Card>
-
-        <Card title="Salida de Residentes" className="dashboard-card" extra={
-          <div className="filter-buttons">
-            <Button size="small">Hoy</Button>
-            <Button size="small">Semana</Button>
-            <Button size="small">Mes</Button>
-          </div>
-        }>
-          <Table
-            size="small"
-            pagination={false}
-            dataSource={salidas}
-            columns={[
-              { title: 'Nombre del residente', dataIndex: 'nombre', key: 'nombre' },
-              {
-                title: 'Hora de salida',
-                dataIndex: 'hora',
-                key: 'hora',
-                render: hora => <span><ClockCircleOutlined /> {hora}</span>
-              },
-            ]}
-            rowKey="nombre"
-          />
-        </Card>
-
+        {/* Humedad */}
         <Card title="Humedad" className="dashboard-card">
           <Table
             size="small"
             pagination={false}
             dataSource={humedad}
             columns={[
-              { title: 'Área', dataIndex: 'area', key: 'area' },
+              {
+                title: 'Área',
+                dataIndex: 'area',
+                key: 'area',
+                render: (text, record) => (
+                  <a onClick={() => openModal(record)} style={{ cursor: 'pointer' }}>
+                    {text}
+                  </a>
+                ),
+              },
               { title: 'Porcentaje', dataIndex: 'valor', key: 'valor' },
             ]}
             rowKey="area"
           />
         </Card>
 
+        {/* Temperatura */}
         <Card title="Temperatura" className="dashboard-card">
           <Table
             size="small"
             pagination={false}
             dataSource={temperatura}
             columns={[
-              { title: 'Área', dataIndex: 'area', key: 'area' },
+              {
+                title: 'Área',
+                dataIndex: 'area',
+                key: 'area',
+                render: (text, record) => (
+                  <a onClick={() => openModal(record)} style={{ cursor: 'pointer' }}>
+                    {text}
+                  </a>
+                ),
+              },
               { title: 'Temperatura', dataIndex: 'valor', key: 'valor' },
             ]}
             rowKey="area"
           />
         </Card>
 
-        <div className="search-bar">
-          <Input placeholder="Buscar" prefix={<SearchOutlined />} />
-          <Button type="primary">Filtrar</Button>
-        </div>
-
-        <Card title="Filtraciones de Residente" className="dashboard-card full-width">
+        {/* Entradas/Salidas unificadas */}
+        <Card
+          title="Entradas y Salidas de Residentes"
+          className="dashboard-card full-width"
+          extra={
+            <div className="filter-buttons">
+              <Button size="small">Hoy</Button>
+              <Button size="small">Semana</Button>
+              <Button size="small">Mes</Button>
+            </div>
+          }
+        >
           <Table
             size="small"
             pagination={false}
-            dataSource={filtraciones}
+            dataSource={registros}
             columns={[
-              { title: 'Número de casa', dataIndex: 'casa', key: 'casa' },
-              { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
-              { title: 'Apellidos', dataIndex: 'apellidos', key: 'apellidos' },
-              { title: 'Correo', dataIndex: 'correo', key: 'correo' },
-              { title: 'Teléfono', dataIndex: 'telefono', key: 'telefono' },
+              { title: 'Nombre del residente', dataIndex: 'nombre', key: 'nombre' },
+              { title: 'Tipo', dataIndex: 'tipo', key: 'tipo' },
+              {
+                title: 'Hora',
+                dataIndex: 'hora',
+                key: 'hora',
+                render: (hora) => (
+                  <span>
+                    <ClockCircleOutlined /> {hora}
+                  </span>
+                ),
+              },
             ]}
-            rowKey="casa"
+            rowKey={(record) => record.nombre + record.tipo + record.hora}
           />
         </Card>
       </div>
+
+      <Modal visible={modalVisible} footer={null} onCancel={closeModal} centered>
+        {modalContent && (
+          <div style={{ textAlign: 'center' }}>
+            <img
+              src={modalContent.img}
+              alt={modalContent.area}
+              style={{ width: '100%', maxHeight: '300px', objectFit: 'cover', borderRadius: 8 }}
+            />
+            <h3 style={{ marginTop: 16 }}>
+              {modalContent.area} - {modalContent.valor}
+            </h3>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };
