@@ -1,205 +1,155 @@
-/* Layout */
-.dashboard-container {
-  display: flex;
-  height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap');
 
-/* Sidebar */
-.sidebar {
-  width: 250px;
-  background: linear-gradient(to top, bottom, #0b0b0b, #0072E6);
-  color: white;
-  padding: 24px;
+.users-wrapper {
+  padding: 20px;
+  background: linear-gradient(to top, #001F5C, #84ADFF);
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-family: 'Mulish', sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border-radius: 0 20px 20px 0;
-}
-
-.dashboard-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.sidebar-user {
-  display: flex;
+  gap: 30px;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 30px;
 }
 
-.user-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+/* Contenedores principales */
+.form-container,
+.table-container {
+  width: 100%;
+  max-width: 1100px;
 }
 
-.user-name {
-  font-weight: bold;
-}
-
-.user-email,
-.user-role {
-  font-size: 12px;
-}
-
-/* Sidebar menu */
-.sidebar-menu {
-  list-style: none;
-  padding: 0;
-  font-size: 16px;
-}
-
-.sidebar-menu li {
-  margin: 10px 0;
-  cursor: pointer;
-}
-
-.sidebar-menu .active {
-  color: #f87171;
-  font-weight: bold;
-}
-
-/* Footer */
-.sidebar-footer p {
-  font-size: 14px;
-  margin: 8px 0;
-  cursor: pointer;
-}
-
-/* Main content */
-.main-content {
-  flex: 1;
-  padding: 32px;
-  background: linear-gradient(to top, right, #001F5C, #84ADFF);
-  overflow-y: auto;
-}
-
-/* Registro */
-.registro-box {  
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-  margin-bottom: 24px;
-}
-
-.registro-title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #1e40af;
-  margin-bottom: 16px;
-}
-
-.registro-form-section {
-  display: flex;
-  gap: 32px;
-}
-
-.form-left {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.form-left input,
-.form-left select {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-.form-left button {
-  background: #22c55e;
-  color: white;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  border: none;
-  font-weight: bold;
-}
-
-.form-left button:hover {
-  background: #16a34a;
-}
-
-/* Calendario */
-.calendar-box {
-  background: white;
-  padding: 16px;
+/* Tarjetas */
+.form-section,
+.list-section {
+  background-color: white;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgb(237, 237, 237);
+}
+
+/* Encabezados de tarjetas */
+.form-section .ant-card-head,
+.list-section .ant-card-head {
+  background-color: #0070f3;
+  font-weight: bold;
+  font-size: 18px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   text-align: center;
-  min-width: 220px;
+  position: relative;
 }
 
-.calendar-title {
-  font-weight: bold;
-  margin-bottom: 12px;
+/* Títulos */
+.form-section .ant-card-head-title {
+  color: black !important; /* Título del formulario en negro */
+  text-align: center;
 }
 
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  font-size: 12px;
+.list-section .ant-card-head-title,
+.ant-modal-title {
+  color: white !important; /* Títulos de la tabla y modal en blanco */
+  text-align: center;
 }
 
-.calendar-day {
-  font-weight: bold;
+/* Título centrado */
+.ant-card-head-title {
+  width: 100%;
+  text-align: center;
 }
 
-.calendar-cell {
-  padding: 4px;
-  background: #f1f5f9;
-  border-radius: 4px;
+/* Ícono de acción a la derecha */
+.ant-card-extra {
+  position: absolute;
+  right: 16px;
+  top: 12px;
 }
 
-/* Lista */
-.lista-box {
-  background: white;
-  padding: 24px;
-  border-radius: 16px;
-}
-
+/* Buscador */
 .search-bar {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 16px;
 }
 
-.search-bar input {
+.search-bar .ant-input {
   flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
 }
 
-.search-bar button {
-  padding: 10px 16px;
-  border: none;
-  background: #3b82f6;
+/* Botón Agregar estilo verde */
+.add-btn {
+  background-color: #2ed47a;
   color: white;
-  border-radius: 8px;
   font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.add-btn:hover {
+  background-color: #27c46c;
+}
+
+/* Estados */
+.status-active,
+.status-inactive {
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-size: 13px;
+}
+
+.status-active {
+  background-color: #e6ffe6;
+  color: green;
+}
+
+.status-inactive {
+  background-color: #ffe6e6;
+  color: red;
+}
+
+/* Botones de acciones */
+.actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-/* Tabla */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
+.view {
+  background-color: #43d6ae;
+  color: white;
 }
 
-thead {
-  background: #f3f4f6;
+.delete {
+  background-color: #ff5e5e;
+  color: white;
 }
 
-th, td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+.edit {
+  background-color: #60a5fa;
+  color: white;
+}
+
+/* Columnas internas responsivas */
+.ant-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Limpieza de filas */
+.ant-row {
+  margin-bottom: 0;
 }

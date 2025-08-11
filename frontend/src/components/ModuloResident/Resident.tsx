@@ -1,79 +1,231 @@
-import { useState } from 'react';
-import { Card, Input, Button, Table, Select, Row, Col } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { useState, useEffect } from 'react';
+import { Card, Input, Button, Table, Form, Row, Col, message, Modal } from 'antd';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
+import axios from 'axios';
 import '../Css/Resident.css';
 
-const { Option } = Select;
+interface ResidentData {
+  _id?: string;
+  nombre: string;
+  casa: string;
+  telefono: string;
+  fecha: string;
+  hora: string;
+  uid: string;
+  tipo: string;
+}
 
 export default function Resident() {
-  const [registros] = useState([
-    {
-      nombre: 'Camila García Torres',
-      casa: '#129',
-      telefono: '6182248877',
-      fecha: '22/06/2025',
-      hora: '15:00',
-      tipo: 'Entrada',
+  const [residentsEntrada, setResidentsEntrada] = useState<ResidentData[]>([]);
+  const [residentsSalida, setResidentsSalida] = useState<ResidentData[]>([]);
+  const [search, setSearch] = useState('');
+  const [form] = Form.useForm();
+  const [formSalida] = Form.useForm();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalSalidaVisible, setModalSalidaVisible] = useState(false);
+
+  const fetchEntradas = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/residentes-entrada');
+      setResidentsEntrada(response.data);
+    } catch {
+      message.error('Error al obtener entradas');
+    }
+  };
+
+  const fetchSalidas = async () => {
+    try {
+      const response = await axios.get('http://localhost:3001/api/residentes-salida');
+      setResidentsSalida(response.data);
+    } catch {
+      message.error('Error al obtener salidas');
+    }
+  };
+
+  const handleRegisterEntrada = async (values: ResidentData) => {
+    try {
+      await axios.post('http://localhost:3001/api/residentes-entrada', {
+        ...values,
+        uid: values.uid.toUpperCase(),
+        tipo: 'Entrada',
+      });
+      message.success('✅ Entrada registrada');
+      form.resetFields();
+      setModalVisible(false);
+      fetchEntradas();
+    } catch {
+      message.error('❌ Error al registrar entrada');
+    }
+  };
+
+  const handleRegisterSalida = async (values: ResidentData) => {
+    try {
+      await axios.post('http://localhost:3001/api/residentes-salida', {
+        ...values,
+        uid: values.uid.toUpperCase(),
+        tipo: 'Salida',
+      });
+      message.success('✅ Salida registrada');
+      formSalida.resetFields();
+      setModalSalidaVisible(false);
+      fetchSalidas();
+    } catch {
+      message.error('❌ Error al registrar salida');
+    }
+  };
+
+  const filteredResidents = [...residentsEntrada, ...residentsSalida].filter((item) =>
+    item.nombre.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const columns = [
+    { title: 'Nombre', dataIndex: 'nombre' },
+    { title: 'Casa', dataIndex: 'casa' },
+    { title: 'Teléfono', dataIndex: 'telefono' },
+    { title: 'Fecha', dataIndex: 'fecha' },
+    { title: 'Hora', dataIndex: 'hora' },
+    { 
+      title: 'Tarjeta', 
+      dataIndex: 'uid',
+      render: (uid: string) => (uid === 'AB3MBB23' ? '' : uid) // Aquí ocultamos el uid específico
     },
-    {
-      nombre: 'Juan Pérez Díaz',
-      casa: '#128',
-      telefono: '6182249955',
-      fecha: '21/06/2025',
-      hora: '09:15',
-      tipo: 'Salida',
-    },
-    {
-      nombre: 'María López Ramírez',
-      casa: '#127',
-      telefono: '6182243569',
-      fecha: '20/06/2025',
-      hora: '20:45',
-      tipo: 'Entrada',
-    },
-  ]);
+    { title: 'Tipo', dataIndex: 'tipo' },
+  ];
+
+  useEffect(() => {
+    fetchEntradas();
+    fetchSalidas();
+  }, []);
 
   return (
-    <div className="dashboard-wrapper">
-      <div className="dashboard-grid">
-        <Card title="Registro de entradas y salidas" className="dashboard-card full-width">
-          <Row gutter={[16, 16]}>
-            <Col xs={24} sm={12} md={6}><Input placeholder="Nombre del residente" /></Col>
-            <Col xs={24} sm={12} md={6}><Input placeholder="Teléfono" /></Col>
-            <Col xs={24} sm={12} md={6}><Input placeholder="Número de casa" /></Col>
-            <Col xs={24} sm={12} md={6}>
-              <Select placeholder="Tipo de acceso" style={{ width: '100%' }}>
-                <Option value="Entrada">Entrada</Option>
-                <Option value="Salida">Salida</Option>
-              </Select>
-            </Col>
-            <Col span={24}><Button type="primary" block>Registrar Acceso</Button></Col>
-          </Row>
-        </Card>
+    <div className="users-wrapper">
+      <div className="table-container">
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+          <Button icon={<PlusOutlined />} onClick={() => setModalVisible(true)}>
+            Agregar Entrada
+          </Button>
+          <Button icon={<PlusOutlined />} type="default" onClick={() => setModalSalidaVisible(true)}>
+            Agregar Salida
+          </Button>
+        </div>
 
-        <Card title="Entradas y salidas registradas" className="dashboard-card full-width">
+        <Card title="Lista de Entradas y Salidas" className="list-section">
           <div className="search-bar">
-            <Input placeholder="Buscar" prefix={<SearchOutlined />} />
-            <Button type="primary">Filtrar</Button>
-            <Button>Historial</Button>
+            <Input
+              placeholder="Buscar por nombre"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              prefix={<SearchOutlined />}
+            />
           </div>
-
           <Table
-            size="small"
-            pagination={false}
-            dataSource={registros}
-            columns={[
-              { title: 'Nombre', dataIndex: 'nombre', key: 'nombre' },
-              { title: 'Casa', dataIndex: 'casa', key: 'casa' },
-              { title: 'Teléfono', dataIndex: 'telefono', key: 'telefono' },
-              { title: 'Fecha', dataIndex: 'fecha', key: 'fecha' },
-              { title: 'Hora', dataIndex: 'hora', key: 'hora' },
-              { title: 'Tipo', dataIndex: 'tipo', key: 'tipo' },
-            ]}
-            rowKey="nombre"
+            columns={columns}
+            dataSource={filteredResidents}
+            rowKey="_id"
+            pagination={{ pageSize: 6 }}
           />
         </Card>
       </div>
+
+      {/* Modal ENTRADA */}
+      <Modal
+        title="Registrar Entrada"
+        open={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
+      >
+        <Form form={form} layout="vertical" onFinish={handleRegisterEntrada}>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item name="nombre" label="Nombre" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="casa" label="Casa" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="telefono" label="Teléfono" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="fecha" label="Fecha" rules={[{ required: true }]}>
+                <Input type="date" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="hora" label="Hora" rules={[{ required: true }]}>
+                <Input type="time" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="uid" label="Tarjeta de visitante" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" block>
+                  Registrar Entrada
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
+
+      {/* Modal SALIDA */}
+      <Modal
+        title="Registrar Salida"
+        open={modalSalidaVisible}
+        onCancel={() => setModalSalidaVisible(false)}
+        footer={null}
+      >
+        <Form form={formSalida} layout="vertical" onFinish={handleRegisterSalida}>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item name="nombre" label="Nombre" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="casa" label="Casa" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="telefono" label="Teléfono" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="fecha" label="Fecha" rules={[{ required: true }]}>
+                <Input type="date" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="hora" label="Hora" rules={[{ required: true }]}>
+                <Input type="time" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="uid" label="Tarjeta de visitante" rules={[{ required: true }]}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" block>
+                  Registrar Salida
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
     </div>
   );
 }

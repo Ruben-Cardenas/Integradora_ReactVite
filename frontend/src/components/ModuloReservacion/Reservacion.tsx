@@ -1,11 +1,13 @@
-import { useState } from "react";
-import { Table, Button, Card, Typography } from "antd";
+import { useState, useEffect } from "react";
+import { Table, Button, Card, Typography, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import axios from "axios";
 import "../Css/Reservacion.css";
 
 const { Title } = Typography;
 
 type Reservacion = {
+  id: number;
   residente: string;
   fecha: string;
   espacio: string;
@@ -13,41 +15,39 @@ type Reservacion = {
 };
 
 export default function Reservaciones() {
-  const [reservaciones, setReservaciones] = useState<Reservacion[]>([
-    {
-      residente: "Carlos Gómez",
-      fecha: "2025-06-30",
-      espacio: "Área de asadores",
-      estado: "reservada",
-    },
-    {
-      residente: "Luisa Martínez",
-      fecha: "2025-07-01",
-      espacio: "Cancha de fútbol",
-      estado: "reservada",
-    },
-    {
-      residente: "Ana Torres",
-      fecha: "2025-07-10",
-      espacio: "Salón de eventos",
-      estado: "reservada",
-    },
-  ]);
+  const [reservaciones, setReservaciones] = useState<Reservacion[]>([]);
 
-  const cancelarReservacion = (index: number) => {
-    setReservaciones((prev) =>
-      prev.map((res, i) =>
-        i === index ? { ...res, estado: "cancelada" } : res
-      )
-    );
+  useEffect(() => {
+    fetchReservaciones();
+  }, []);
+
+  const fetchReservaciones = async () => {
+    try {
+      const response = await axios.get<Reservacion[]>("http://localhost:3001/api/reservaciones");
+      setReservaciones(response.data);
+    } catch {
+      message.error("Error al cargar las reservaciones");
+    }
   };
 
-  const marcarComoRealizada = (index: number) => {
-    setReservaciones((prev) =>
-      prev.map((res, i) =>
-        i === index ? { ...res, estado: "realizada" } : res
-      )
-    );
+  const cancelarReservacion = async (id: number) => {
+    try {
+      await axios.put(`http://localhost:3001/api/reservaciones/${id}/cancelar`);
+      message.success("Reservación cancelada");
+      fetchReservaciones();
+    } catch {
+      message.error("Error al cancelar la reservación");
+    }
+  };
+
+  const marcarComoRealizada = async (id: number) => {
+    try {
+      await axios.put(`http://localhost:3001/api/reservaciones/${id}/realizada`);
+      message.success("Reservación marcada como realizada");
+      fetchReservaciones();
+    } catch {
+      message.error("Error al marcar como realizada");
+    }
   };
 
   const columns: ColumnsType<Reservacion> = [
@@ -79,19 +79,17 @@ export default function Reservaciones() {
     {
       title: "Acciones",
       key: "acciones",
-      render: (_, __, index) => {
-        const reservacion = reservaciones[index];
+      render: (_, reservacion) => {
         const hoy = new Date();
         const fechaRes = new Date(reservacion.fecha);
-        const puedeMarcarRealizada =
-          reservacion.estado === "reservada" && fechaRes < hoy;
+        const puedeMarcarRealizada = reservacion.estado === "reservada" && fechaRes < hoy;
 
         return (
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <Button
               danger
               disabled={reservacion.estado !== "reservada"}
-              onClick={() => cancelarReservacion(index)}
+              onClick={() => cancelarReservacion(reservacion.id)}
             >
               Cancelar
             </Button>
@@ -99,7 +97,7 @@ export default function Reservaciones() {
             {puedeMarcarRealizada && (
               <Button
                 type="primary"
-                onClick={() => marcarComoRealizada(index)}
+                onClick={() => marcarComoRealizada(reservacion.id)}
               >
                 Marcar como realizada
               </Button>
@@ -119,11 +117,7 @@ export default function Reservaciones() {
         <Table
           dataSource={reservaciones}
           columns={columns}
-          rowKey={(record, index) =>
-            index !== undefined
-              ? index.toString()
-              : record.residente + record.fecha + record.espacio
-          }
+          rowKey="id"
           pagination={false}
         />
       </Card>

@@ -1,5 +1,5 @@
 import { type JSX, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import "../css/Login.css";
 
@@ -11,7 +11,7 @@ export default function Login(): JSX.Element {
   const navigate = useNavigate();
 
   const togglePassword = () => {
-    setMostrarPassword(prev => !prev);
+    setMostrarPassword((prev) => !prev);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -35,6 +35,7 @@ export default function Login(): JSX.Element {
       // Guarda token y usuario
       localStorage.setItem("token", data.token);
       localStorage.setItem("usuario", JSON.stringify(data.user));
+      localStorage.setItem("userId", data.user.id); // <-- Aquí guardamos el userId
 
       // Redirige al menú
       navigate("/menu");
@@ -77,26 +78,17 @@ export default function Login(): JSX.Element {
               placeholder="Ingresa tu contraseña"
               className="login-input"
             />
-            <button
-              type="button"
-              onClick={togglePassword}
-              className="eye-btn"
-            >
+            <button type="button" onClick={togglePassword} className="eye-btn">
               {mostrarPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
 
           {error && <div className="error-message">{error}</div>}
 
-          <div className="forgot-password">¿Has olvidado tu contraseña?</div>
 
           <button type="submit" className="submit-btn">
             Iniciar sesión
           </button>
-
-          <div className="register-link">
-            ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
-          </div>
         </form>
       </div>
     </div>

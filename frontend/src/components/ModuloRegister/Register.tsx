@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import "../Css/Register.css";
 
 export default function Register() {
@@ -156,9 +156,7 @@ export default function Register() {
             Registrarse
           </button>
 
-          <div className="login-link">
-            ¿Ya tienes cuenta? <Link to="/">Iniciar sesión</Link>
-          </div>
+         
         </form>
       </div>
     </div>

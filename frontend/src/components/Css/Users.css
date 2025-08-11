@@ -18,19 +18,47 @@
   max-width: 1100px;
 }
 
+/* Centrar la tabla */
+.table-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Alinear botón a la izquierda */
+.add-resident-btn {
+  background-color: #52c41a;
+  border-color: #52c41a;
+  color: white;
+  margin-bottom: 16px;
+  width: 200px;
+  align-self: flex-start; /* <-- Aquí está el cambio */
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.add-resident-btn:hover,
+.add-resident-btn:focus {
+  background-color: #389e0d;
+  border-color: #389e0d;
+  color: white;
+}
+
 /* Tarjetas */
 .form-section,
 .list-section {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 /* Encabezados de tarjetas */
 .form-section .ant-card-head,
 .list-section .ant-card-head {
   background-color: #0070f3;
-  color: white;
+  color: white !important; /* Forzar blanco */
   font-weight: bold;
   font-size: 18px;
   border-top-left-radius: 12px;
@@ -43,6 +71,7 @@
 .ant-card-head-title {
   width: 100%;
   text-align: center;
+  color: white !important; /* Forzar blanco */
 }
 
 /* Ícono de acción a la derecha (como la flecha) */
@@ -57,6 +86,7 @@
   display: flex;
   gap: 10px;
   margin-bottom: 16px;
+  width: 100%;
 }
 
 .search-bar .ant-input {
@@ -86,32 +116,30 @@
 /* Botones de acciones */
 .actions {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 10px;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
-.btn {
-  padding: 4px 8px;
-  font-size: 12px;
-  font-weight: bold;
+/* Íconos de acción en botones */
+.action-icon-btn {
+  background: none;
   border: none;
-  border-radius: 6px;
   cursor: pointer;
+  font-size: 18px;
+  color: #1890ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
 }
 
-.view {
-  background-color: #43d6ae;
-  color: white;
-}
-
-.delete {
-  background-color: #ff5e5e;
-  color: white;
-}
-
-.edit {
-  background-color: #60a5fa;
-  color: white;
+.action-icon-btn:hover {
+  background-color: rgba(24, 144, 255, 0.15);
+  color: #096dd9;
 }
 
 /* Columnas internas responsivas */

@@ -22,19 +22,16 @@
 /* Tarjetas de Riego */
 .irrigation-card {
   border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px rgba(255, 254, 254, 0.1);
   overflow: hidden;
 }
 
 /* Encabezado de las tarjetas */
 .irrigation-card .ant-card-head {
-  background-color: #0070f3;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   text-align: center;
+  /* quitamos color acá para que no interfiera con el inline */
 }
 
 /* Imagen */
